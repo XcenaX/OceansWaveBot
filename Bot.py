@@ -162,10 +162,5 @@ class Bot():
         #     bot.send_message(user, text=event_text, parse_mode="html")
 
     def start_bot(self):
-        while(True):
-            try:
-                self.bot.polling(none_stop=True, interval=0)
-            except:
-                pass
-
+        self.bot.polling(none_stop=True, interval=0)
 
