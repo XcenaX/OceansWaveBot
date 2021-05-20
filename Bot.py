@@ -20,7 +20,7 @@ class Bot():
         self.owners_file = settings["BASE_DIR"]+self.owners_file
         self.users_file = settings["BASE_DIR"]+self.users_file
         @self.bot.message_handler(content_types=['text'])
-        def start(message): 
+        def start(message):             
             if not "wrong" in message.text:           
                 if self.check_owner(message.from_user.id):
                     if message.text == "/start":
@@ -35,7 +35,7 @@ class Bot():
         @self.bot.callback_query_handler(func=lambda call: True)
         def callback_worker(call):            
             if call.data == "add_new":                
-                self.bot.send_message(call.message.chat.id, "Напиши текст рассылки: ")
+                self.bot.send_message(call.message.chat.id, "Напиши текст рассылки: ", reply_markup=self.get_cancel_keyboard())
                 self.bot.register_next_step_handler(call.message, self.make_mailing)
             elif call.data == "search_specialist":
                 self.bot.send_message(call.message.chat.id, "Выберите страну: ", reply_markup=self.get_countries_keyboard())
@@ -71,15 +71,15 @@ class Bot():
                 f.write("\n"+id)
 
     def get_countries(self):
-        responce = requests.get(self.api_url+"countries/")
-        print(data.text)
+        responce = requests.get(self.api_url+"countries")
+        print(responce.text)
         data = responce.json()
         print(data)
         return data
 
     def get_country_by_callback(self, callback):
         callback = callback.replace("country", "")
-        responce = requests.get(self.api_url+"countries/"+callback)
+        responce = requests.get(self.api_url+"countries"+callback)
         return responce.json()
 
     def get_specialsts_data_by_city(self, callback):
@@ -125,11 +125,17 @@ class Bot():
         keyboard.add(search_specialist)
         return keyboard
 
+    def get_cancel_keyboard(self):
+        keyboard = types.InlineKeyboardMarkup() 
+        cancel = types.InlineKeyboardButton(text="Назад", callback_data="cancel")
+        keyboard.add(cancel)
+        return keyboard
+
     def get_countries_keyboard(self):
         keyboard = types.InlineKeyboardMarkup() 
         countries = self.get_countries()
         for country in countries:
-            current_country = types.InlineKeyboardButton(text=country["country"], callback_data="country"+country["id"])        
+            current_country = types.InlineKeyboardButton(text=country["country"], callback_data="country"+str(country["id"]))
             keyboard.add(current_country)
         cancel = types.InlineKeyboardButton(text="Отмена", callback_data="cancel")        
         keyboard.add(cancel)
@@ -138,7 +144,7 @@ class Bot():
     def get_cities_keyboard(self, country):
         keyboard = types.InlineKeyboardMarkup()
         for city in country["cities"]:
-            current_city = types.InlineKeyboardButton(text=city["name"], callback_data="country"+city["id"])        
+            current_city = types.InlineKeyboardButton(text=city["name"], callback_data="country"+str(city["id"]))
             keyboard.add(current_city)
         cancel = types.InlineKeyboardButton(text="Отмена", callback_data="cancel")        
         keyboard.add(cancel)
