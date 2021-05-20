@@ -1,7 +1,8 @@
 from Bot import Bot
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = ""
 
 TELEGRAM = {
     'bot_token': '1895297659:AAFdRK2iPvGAQeOCB8auCqOshuE3VKomenQ',
