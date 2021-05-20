@@ -12,3 +12,4 @@ TELEGRAM = {
 
 TELEGRAM_BOT = Bot(TELEGRAM)
 TELEGRAM_BOT.start_bot()
+#web: python3 start_bot.py
