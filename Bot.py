@@ -72,21 +72,19 @@ class Bot():
 
     def get_countries(self):
         responce = requests.get(self.api_url+"countries")
-        print(responce.text)
-        data = responce.json()
-        print(data)
+        data = responce.json()        
         return data
 
     def get_country_by_callback(self, callback):
         callback = callback.replace("country", "")
-        responce = requests.get(self.api_url+"countries"+callback)
+        responce = requests.get(self.api_url+"countries/"+callback)
         return responce.json()
 
-    def get_specialsts_data_by_city(self, callback):
-        callback = callback.replace("city", "")
-        responce = requests.get(self.api_url+"specialists?city="+callback)
+    def get_specialsts_data_by_city(self, callback):        
+        callback = callback.replace("city", "")        
+        responce = requests.get(self.api_url+"specialists/?city="+callback)        
         specialists = responce.json()
-        text = """Контакты специалистов:\n"""
+        text = """Контакты специалистов:"""
         for specialist in specialists:
             text += """\n
             Имя: {0}
@@ -144,7 +142,7 @@ class Bot():
     def get_cities_keyboard(self, country):
         keyboard = types.InlineKeyboardMarkup()
         for city in country["cities"]:
-            current_city = types.InlineKeyboardButton(text=city["name"], callback_data="country"+str(city["id"]))
+            current_city = types.InlineKeyboardButton(text=city["name"], callback_data="city"+str(city["id"]))
             keyboard.add(current_city)
         cancel = types.InlineKeyboardButton(text="Отмена", callback_data="cancel")        
         keyboard.add(cancel)
