@@ -88,10 +88,9 @@ class Bot():
         for specialist in specialists:
             text += """\n
             Имя: {0}
-            Whatsapp: {1}
-            Telegram: {2}
+            Telegram: {1}
             \n
-            """.format(specialist["name"], specialist["whatsapp"], specialist["telegram"])
+            """.format(specialist["name"], specialist["telegram"])
         return text
 
     def check_owner(self, name):
