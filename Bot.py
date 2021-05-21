@@ -49,7 +49,10 @@ class Bot():
                 self.bot.send_message(call.message.chat.id, "Выберите действие:", reply_markup=self.get_main_keyboard())
             else:
                 self.bot.send_message(call.message.chat.id, "Я тебя не понимаю")
-            self.bot.delete_message(call.message.chat.id, call.message.id)
+            try:
+                self.bot.delete_message(call.message.chat.id, call.message.id)
+            except:
+                pass
 
     def get_owners(self):
         with open(self.owners_file) as f:
