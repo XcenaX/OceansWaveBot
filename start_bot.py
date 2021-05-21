@@ -12,5 +12,10 @@ TELEGRAM = {
 }
 
 TELEGRAM_BOT = Bot(TELEGRAM)
-TELEGRAM_BOT.start_bot()
-sleep(9999999999)
+while True:
+    try:
+        TELEGRAM_BOT.start_bot()
+    except:
+        print(0)
+        sleep(1)
+        pass
