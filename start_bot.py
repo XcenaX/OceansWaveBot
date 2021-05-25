@@ -15,7 +15,7 @@ TELEGRAM_BOT = Bot(TELEGRAM)
 while True:
     try:
         TELEGRAM_BOT.start_bot()
-    except:
-        print(0)
+    except Exception as error:
+        print(error)
         sleep(1)
         pass
