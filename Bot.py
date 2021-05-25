@@ -20,7 +20,8 @@ class Bot():
         self.owners_file = settings["BASE_DIR"]+self.owners_file
         self.users_file = settings["BASE_DIR"]+self.users_file
         @self.bot.message_handler(content_types=['text'])
-        def start(message):             
+        def start(message):        
+            print(message)     
             if not message.post:           
                 if self.check_owner(message.from_user.id):
                     if message.text == "/start":
