@@ -20,18 +20,15 @@ class Bot():
         self.owners_file = settings["BASE_DIR"]+self.owners_file
         self.users_file = settings["BASE_DIR"]+self.users_file
         @self.bot.message_handler(content_types=['text'])
-        def start(message):        
-            
-            print(message)
-            if not message.post:           
-                if self.check_owner(message.from_user.id):
-                    if message.text == "/start":
-                        self.add_user(message.from_user.id)
-                        self.bot.send_message(message.from_user.id, "Привет", reply_markup=self.get_main_keyboard())
-                    else:
-                        self.bot.send_message(message.from_user.id, "Привет", reply_markup=self.get_main_keyboard())
+        def start(message):                   
+            if self.check_owner(message.from_user.id):
+                if message.text == "/start":
+                    self.add_user(message.from_user.id)
+                    self.bot.send_message(message.from_user.id, "Привет", reply_markup=self.get_main_keyboard())
                 else:
-                    self.bot.send_message(message.from_user.id, "Привет", reply_markup=self.get_user_keyboard())
+                    self.bot.send_message(message.from_user.id, "Привет", reply_markup=self.get_main_keyboard())
+            else:
+                self.bot.send_message(message.from_user.id, "Привет", reply_markup=self.get_user_keyboard())
 
 
         @self.bot.callback_query_handler(func=lambda call: True)
