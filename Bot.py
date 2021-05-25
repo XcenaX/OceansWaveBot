@@ -32,11 +32,8 @@ class Bot():
 
 
         @self.bot.callback_query_handler(func=lambda call: True)
-        def callback_worker(call):            
-            if call.data == "add_new":                
-                self.bot.send_message(call.message.chat.id, "Напиши текст рассылки: ", reply_markup=self.get_cancel_keyboard())
-                self.bot.register_next_step_handler(call.message, self.make_mailing)
-            elif call.data == "search_specialist":
+        def callback_worker(call):                        
+            if call.data == "search_specialist":
                 self.bot.send_message(call.message.chat.id, "Выберите страну: ", reply_markup=self.get_countries_keyboard())
             elif "country" in call.data:
                 country = self.get_country_by_callback(call.data)
@@ -112,9 +109,7 @@ class Bot():
 
     def get_main_keyboard(self):
         keyboard = types.InlineKeyboardMarkup() 
-        add_new = types.InlineKeyboardButton(text="Сделать рассылку", callback_data="add_new")
         search_specialist = types.InlineKeyboardButton(text="Написать консультанту", callback_data="search_specialist")
-        keyboard.add(add_new)
         keyboard.add(search_specialist)
         return keyboard
 
@@ -148,20 +143,6 @@ class Bot():
         cancel = types.InlineKeyboardButton(text="Отмена", callback_data="cancel")        
         keyboard.add(cancel)
         return keyboard
-
-    def make_mailing(self, message):
-        if "wrong" not in message.text:
-            self.bot.send_message(chat_id="@%s" % self.channel_name, text=message.text)
-            self.bot.send_message(message.from_user.id, "Я закончил рассылку\nЧто дальше?",  reply_markup=self.get_main_keyboard())
-
-    def send_event(self, event):
-        users = self.get_users()
-        message_html = render_to_string('telegram_message.html', {
-            'event': event
-        })
-        self.bot.send_message(chat_id="@%s" % self.channel_name, text=message_html, parse_mode="html")
-        # for user in users:
-        #     bot.send_message(user, text=event_text, parse_mode="html")
 
     def start_bot(self):
         self.bot.polling(none_stop=True, interval=0)
