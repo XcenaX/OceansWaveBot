@@ -21,8 +21,8 @@ class Bot():
         self.users_file = settings["BASE_DIR"]+self.users_file
         @self.bot.message_handler(content_types=['text'])
         def start(message):        
-            print(message.entities[0].sender_chat)
-            print(message.entities[0].post)
+            
+            print(message)
             if not message.post:           
                 if self.check_owner(message.from_user.id):
                     if message.text == "/start":
